@@ -46,6 +46,7 @@
                             <div class="col-md-6">
                                 <input type="radio" name="role" value="1" checked>I'm a client<br>
                                 <input type="radio" name="role" value="2">I'm a agent<br>
+                                <input type="radio" name="role" value="10">I'm a admin<br>
                             </div>
                         </div>
 

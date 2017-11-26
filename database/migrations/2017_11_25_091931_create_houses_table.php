@@ -23,8 +23,8 @@ class CreateHousesTable extends Migration
             $table->text('address');
             $table->string('operation', 4);
             $table->integer('house_type_id')->unsigned();
-            $table->dateTime('openview');
-            $table->integer('openview_min');
+            $table->dateTime('openview')->nullable();
+            $table->integer('openview_min')->nullable();
             $table->timestamps();
         });
     }

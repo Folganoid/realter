@@ -30,7 +30,10 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div class="navbar-nav">
+            <a class="nav-item nav-link" href="{{ route('list') }}">List</a>
             <a class="nav-item nav-link" href="{{ route('cabinet') }}">Cabinet</a>
+            <a class="nav-item nav-link" href="{{ route('property.add') }}">Add property</a>
+            <a class="nav-item nav-link" href="{{ route('admin') }}">for Admin</a>
         </div>
 
         <div class="navbar-nav ml-auto">
@@ -66,6 +69,12 @@
 </nav>
 
 <div class="container">
+    @if (session('status'))
+        <div class="alert alert-{{ session('class') }}">
+            {{ session('status') }}
+        </div>
+    @endif
+
     @yield('content')
 </div>
 

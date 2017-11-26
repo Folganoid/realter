@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\House;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Gate;
 
 class CabinetController extends Controller
 {
@@ -15,9 +16,13 @@ class CabinetController extends Controller
 
     public function index() {
 
-        $property = House::where('user_id', Auth::id())->with(['image', 'document', 'houseType', 'watch'])->get();
-        dd($property->toArray());
+        if(Gate::denies('is-agent')) {
+            return redirect('/')->with(['status' => 'You are not agent!', 'class' => 'danger']);
+        }
 
-        return view('cabinet');
+        $houses = House::where('user_id', Auth::id())->with(['image', 'document', 'houseType', 'watch'])->get()->toArray();
+       // dd($houses);
+
+        return view('cabinet')->with(['houses' => $houses]);
     }
 }

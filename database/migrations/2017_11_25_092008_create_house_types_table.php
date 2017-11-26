@@ -16,7 +16,7 @@ class CreateHouseTypesTable extends Migration
         Schema::create('house_types', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name', 30);
-            $table->string('json');
+            $table->string('json')->nullable();
         });
     }
 

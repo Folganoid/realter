@@ -6,6 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Watch extends Model
 {
+    public $timestamps = false;
+
+    protected $fillable = [
+        'user_id', 'house_id', 'created_at'
+    ];
+
     protected $table = 'watch';
     //
     public function user() {
