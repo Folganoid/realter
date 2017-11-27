@@ -17,17 +17,10 @@ class PropertyController extends Controller
     public function add() {
 
         if(Gate::denies('is-agent')) {
-            return redirect('/')->with(['status' => 'You are not agent!', 'class' => 'danger']);
+            return redirect()->route('home')->with(['status' => 'You are not agent!', 'class' => 'danger']);
         }
 
-        $types = House_type::all()->toArray();
-        $typesArr = [];
-
-        for( $i = 0 ; $i < count($types); $i++) {
-            $typesArr[$types[$i]['id']] = $types[$i]['name'];
-        };
-
-        return view('property_add')->with('types', $typesArr);
+        return view('property_add')->with('types', $this->getHouseTypes());
     }
 
     /**
@@ -37,7 +30,8 @@ class PropertyController extends Controller
      */
     public function view($id) {
 
-        $property = House::where('id', $id)->with(['image', 'document', 'houseType', 'watch', 'user'])->first()->toArray();
+        $property = House::where('id', $id)->with(['image', 'document', 'houseType', 'user'])->first()->toArray();
+        $watches = Watch::where('house_id', $id)->with('user')->get()->toArray();
 
         if (Auth::check() && $property['user_id'] != Auth::id()) {
             $watch = new Watch();
@@ -47,7 +41,7 @@ class PropertyController extends Controller
             $watch->save();
         }
 
-        return view('property_view_one')->with('property', $property);
+        return view('property_view_one')->with(['property' => $property, 'watch' => $watches]);
     }
 
     /**

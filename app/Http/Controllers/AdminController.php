@@ -12,7 +12,7 @@ class AdminController extends Controller
     public function index() {
 
         if(Gate::denies('is-admin')) {
-            return redirect('/')->with(['status' => 'You are not admin!', 'class' => 'danger']);
+            return redirect()->route('home')->with(['status' => 'You are not admin!', 'class' => 'danger']);
         }
 
 
@@ -29,6 +29,6 @@ class AdminController extends Controller
         $type->json = $data['json'];
         $type->save();
 
-        return redirect()->route('/')->with(['status' => 'House type added', 'class' => 'success']);
+        return redirect()->route('home')->with(['status' => 'House type added', 'class' => 'success']);
     }
 }

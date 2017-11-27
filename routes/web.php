@@ -11,13 +11,9 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/', 'HomeController@index')->name('home');
 
 Route::get('/cabinet', 'CabinetController@index')->name('cabinet');
 Route::get('/list', 'ListController@index')->name('list');
@@ -32,6 +28,8 @@ Route::prefix('admin')->group(function () {
     Route::get('/', 'AdminController@index')->name('admin');
     Route::post('/save_type', 'AdminController@saveType')->name('admin.save_type');
 });
+
+Route::get('/search', 'SearchController@index')->name('search');
 
 
 

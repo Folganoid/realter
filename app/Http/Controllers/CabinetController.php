@@ -17,7 +17,7 @@ class CabinetController extends Controller
     public function index() {
 
         if(Gate::denies('is-agent')) {
-            return redirect('/')->with(['status' => 'You are not agent!', 'class' => 'danger']);
+            return redirect()->route('home')->with(['status' => 'You are not agent!', 'class' => 'danger']);
         }
 
         $houses = House::where('user_id', Auth::id())->with(['image', 'document', 'houseType', 'watch'])->get()->toArray();

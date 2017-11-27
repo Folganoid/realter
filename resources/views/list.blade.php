@@ -3,6 +3,32 @@
 @section('content')
     <h2>Common list</h2>
     <br>
+
+    <div class="container">
+        <h5>Search</h5>
+        <div>
+            {!! Form::open(['route' => 'list', 'method' => 'get']) !!}
+
+            {{ Form::text('string', '', ['placeholder' => 'Enter address, name etc']) }}
+
+            {{ Form::select('type', $types) }}
+
+            {{ Form::label('Price min') }}
+            {{ Form::number('price_min') }}
+
+            {{ Form::label('Price max') }}
+            {{ Form::number('price_max') }}
+
+            {{ Form::select('operation', ['0' => 'All', 'Buy' => 'Buy', 'Rent' => 'Rent']) }}
+
+            {{ Form::submit('Search') }}
+            {!! Form::close() !!}
+        </div>
+    </div>
+
+
+
+    <br>
     @if(!empty($houses))
         @for( $i = 0 ; $i < count($houses); $i++)
             <div class="card">
@@ -12,7 +38,7 @@
                         <sup>Created at : {{ $houses[$i]['created_at'] }} / Updated at
                             : {{ $houses[$i]['created_at'] }}</sup>
                         <h6 class="card-title">{{$houses[$i]['house_type']['name']}} - {{ $houses[$i]['desc'] }}</h6>
-                        <p class="card-text">Address: {{$houses[0]['address']}}</p>
+                        <p class="card-text">Address: {{$houses[$i]['address']}}</p>
                         <ul>
                             <li>Square : {{ $houses[$i]['square'] }}</li>
                             <li>Price : <b>{{ $houses[$i]['price'] }}</b></li>
