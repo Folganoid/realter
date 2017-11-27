@@ -26,7 +26,7 @@
                                 <b>({{ date('H:i:s', strtotime($property['openview'])) }})</b></li>
                         @endif
                     @endif
-                    <li>Watched : {{ count($watch) }}</li>
+                    <li>Watched : {{ count($property['watch']) }}</li>
                     @if(count($watch) > 0)
                     <table>
                         <tr>
