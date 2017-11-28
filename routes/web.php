@@ -29,7 +29,8 @@ Route::prefix('admin')->group(function () {
     Route::post('/save_type', 'AdminController@saveType')->name('admin.save_type');
 });
 
-Route::get('/search', 'SearchController@index')->name('search');
+Route::get('/client/{id}', 'ClientController@showClient')->name('client');
+Route::get('/agent/{id}', 'ClientController@showAgent')->name('agent');
 
 
 

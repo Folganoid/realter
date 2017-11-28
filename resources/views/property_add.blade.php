@@ -34,6 +34,9 @@
     <br>
     {{ Form::label('Image') }}
     {{ Form::text('image', '', ['placeholder' => 'Do not work yet']) }}
+    <br>
+    {{ Form::label('Documents') }}
+    {{ Form::text('doc', '', ['placeholder' => 'Do not work yet']) }}
 
     <br>
     {{ Form::submit('Update') }}

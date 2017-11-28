@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Document;
 use App\House;
 use App\House_type;
 use App\Image;
@@ -88,6 +89,14 @@ class PropertyController extends Controller
             $image = new Image();
             $image->name = $data['name'];
             $image->path = $data['image'];
+            $image->house_id = $lastId;
+            $image->save();
+        }
+
+        if ($data['doc']) {
+            $image = new Document();
+            $image->name = $data['name'];
+            $image->path = $data['doc'];
             $image->house_id = $lastId;
             $image->save();
         }
