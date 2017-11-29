@@ -10,11 +10,15 @@
             <div class="col-8">
                 <sup>Created at : {{ $property['created_at'] }} / Updated at
                     : {{ $property['created_at'] }}</sup>
-                <h6 class="card-title">{{$property['house_type']['name']}} - {{ $property['desc'] }}</h6>
+                <h6 class="card-title">{{ $types[$property['house_type_id']] }} - {{ $property['desc'] }}</h6>
                 <p class="card-text">Address: {{$property['address']}}</p>
                 <ul>
-                    <li>Square : {{ $property['square'] }}</li>
-                    <li>Price : <b>{{ $property['price'] }}$</b></li>
+                    <li>Square : {{ $property['square'] }} {{ $square[$property['square_measure_id']] }}</li>
+                    <li>Price : <b>{{ $property['price'] }}$</b>
+                        @if($property['operation_measure_id'])
+                            <i>{{ $rent[$property['operation_measure_id']] }}</i>
+                        @endif
+                    </li>
                     @if($property['openview'])
                         @if($property['openview_min'])
                             <li>Open view : {{ date('F d, Y', strtotime($property['openview'])) }} -

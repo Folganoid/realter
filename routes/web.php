@@ -26,7 +26,7 @@ Route::prefix('property')->group(function () {
 
 Route::prefix('admin')->group(function () {
     Route::get('/', 'AdminController@index')->name('admin');
-    Route::post('/save_type', 'AdminController@saveType')->name('admin.save_type');
+
 });
 
 Route::get('/client/{id}', 'ClientController@showClient')->name('client');

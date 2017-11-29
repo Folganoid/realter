@@ -17,19 +17,15 @@ class ClientController extends Controller
         $client = User::where('id' , $id)->with(['house'])->first()->toArray();
         $watch = Watch::where('user_id', $id)->with('house')->get()->toArray();
         $search = Search::where('user_id', $id)->get()->toArray();
-        $types = House_type::all()->toArray();
-        $typesArr = [];
+        $types = Config::get('settings.types');;
 
-        for($i = 0 ; $i < count($types); $i++) {
-            $typesArr[$types[$i]['id']] = $types[$i]['name'];
-        }
         for($i = 0 ; $i < count($search); $i++) {
             $search[$i]['json'] = json_decode($search[$i]['json']);
         }
 
       //  dd($search);
 
-        return view('client')->with(['client' => $client, 'watch' => $watch, 'search' => $search, 'types' => $typesArr]);
+        return view('client')->with(['client' => $client, 'watch' => $watch, 'search' => $search, 'types' => $types]);
     }
 
     public function showAgent($id) {

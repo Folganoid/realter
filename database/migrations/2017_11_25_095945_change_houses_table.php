@@ -16,7 +16,6 @@ class ChangeHousesTable extends Migration
         Schema::table('houses', function (Blueprint $table) {
             //
             $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('house_type_id')->references('id')->on('house_types');
         });
     }
 

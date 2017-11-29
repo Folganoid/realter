@@ -25,6 +25,8 @@ class CreateHousesTable extends Migration
             $table->integer('house_type_id')->unsigned();
             $table->dateTime('openview')->nullable();
             $table->integer('openview_min')->nullable();
+            $table->integer('operation_measure_id')->nullable();
+            $table->integer('square_measure_id')->nullable();
             $table->timestamps();
         });
     }

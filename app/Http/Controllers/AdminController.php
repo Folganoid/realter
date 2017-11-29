@@ -15,20 +15,6 @@ class AdminController extends Controller
             return redirect()->route('home')->with(['status' => 'You are not admin!', 'class' => 'danger']);
         }
 
-
-        $house_types = House_type::all();
-
-        return view('admin')->with('types', $house_types);
-    }
-
-    public function saveType(Request $request) {
-        $data = $request->all();
-
-        $type = new House_type();
-        $type->name = $data['name'];
-        $type->json = $data['json'];
-        $type->save();
-
-        return redirect()->route('home')->with(['status' => 'House type added', 'class' => 'success']);
+        return view('admin');
     }
 }

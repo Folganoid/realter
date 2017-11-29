@@ -11,16 +11,20 @@
     {{ Form::textarea('description', '', ['placeholder' => 'enter text', 'required' => 'required']) }}
     <br>
     {{ Form::label('Price') }}
-    {{ Form::number('price', '', ['placeholder' => '1000000000.00', 'required' => 'required']) }}
+    {{ Form::number('price', '', ['placeholder' => '1000000000.00', 'required' => 'required']) }}$
+    {{ Form::select('rent_measure', $rent) }}
+
     <br>
     {{ Form::label('Square') }}
     {{ Form::number('square', '', ['placeholder' => '1000000000.00', 'required' => 'required']) }}
+    {{ Form::select('square_measure', $square) }}
+
     <br>
     {{ Form::label('Address') }}
     {{ Form::text('address', '', ['placeholder' => 'Enter address', 'required' => 'required']) }}
     <br>
     {{ Form::label('Operation') }}
-    {{ Form::select('operation', ['Buy' => 'Buy', 'Rent' => 'Rent']) }}
+    {{ Form::select('operation', $operation) }}
     <br>
     {{ Form::label('Property type') }}
     {{ Form::select('house_type_id', $types) }}

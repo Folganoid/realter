@@ -8,15 +8,13 @@ class House extends Model
 {
 
     protected $fillable = [
-        'name', 'user_id', 'desc', 'price', 'square', 'address', 'operation', 'house_type_id', 'openview', 'openview_min',
+        'name', 'user_id', 'desc', 'price',
+        'square', 'address', 'operation', 'house_type_id', 'openview', 'openview_min',
+        'operation_meaure_id', 'square_measure_id',
     ];
 
     public function user() {
         return $this->belongsTo('App\User');
-    }
-
-    public function houseType() {
-        return $this->belongsTo('App\House_type');
     }
 
     public function image() {

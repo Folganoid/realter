@@ -7,7 +7,6 @@ use App\House;
 use App\House_type;
 use App\Image;
 use App\Watch;
-use Illuminate\Database\Eloquent\Relations\MorphOneOrMany;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Gate;
@@ -22,7 +21,12 @@ class PropertyController extends Controller
             return redirect()->route('home')->with(['status' => 'You are not agent!', 'class' => 'danger']);
         }
 
-        return view('property_add')->with('types', $this->getHouseTypes());
+        return view('property_add')->with([
+            'types' => $this->types,
+            'rent' => $this->rent,
+            'operation' => $this->operation,
+            'square' => $this->square
+        ]);
     }
 
     /**
@@ -32,9 +36,7 @@ class PropertyController extends Controller
      */
     public function view($id)
     {
-
-        $property = House::where('id', $id)->with(['image', 'document', 'watch', 'houseType', 'user'])->first()->toArray();
-
+        $property = House::where('id', $id)->with(['image', 'document', 'watch', 'user'])->first()->toArray();
         $watches = null;
 
         if ($property['user_id'] == Auth::id() || Gate::allows('is-admin')) {
@@ -49,8 +51,14 @@ class PropertyController extends Controller
             $watch->save();
         }
 
-
-        return view('property_view_one')->with(['property' => $property, 'watch' => $watches]);
+        return view('property_view_one')->with([
+            'property' => $property,
+            'watch' => $watches,
+            'types' => $this->types,
+            'rent' => $this->rent,
+            'operation' => $this->operation,
+            'square' => $this->square
+        ]);
     }
 
     /**
@@ -81,6 +89,8 @@ class PropertyController extends Controller
         $house->house_type_id = $data['house_type_id'];
         $house->openview = $timestamp;
         $house->openview_min = ($timestamp) ? $data['openview_min'] : null;
+        $house->operation_measure_id = ($data['rent_measure'] > 0) ? $data['rent_measure'] : null;
+        $house->square_measure_id = $data['square_measure'];
 
         $house->save();
         $lastId = $house->id;

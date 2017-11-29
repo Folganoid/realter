@@ -12,6 +12,7 @@ class ListController extends Controller
     public function index(Request $request) {
 
         $data = $request->all();
+
         $search = [];
 
         $where = [];
@@ -66,11 +67,17 @@ class ListController extends Controller
         }
 
 
-        $houses = House::with(['image', 'houseType', 'watch', 'user'])->
+        $houses = House::with(['image', 'watch', 'user'])->
         where($where)->orWhere($orWhere)->orWhere($orWhere2)->
         get()->toArray();
 
-        return view('list')->with(['houses' => $houses, 'types' => array_merge(['0' => 'All'], $this->getHouseTypes())]);
+        return view('list')->with([
+            'houses' => $houses,
+            'types' => array_merge(['0' => 'All'], $this->types),
+            'operation' => array_merge(['0' => 'All'], $this->operation),
+            'rent' => $this->rent,
+            'square' => $this->square
+        ]);
     }
 
 }

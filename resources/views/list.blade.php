@@ -19,7 +19,7 @@
             {{ Form::label('Price max') }}
             {{ Form::number('price_max') }}
 
-            {{ Form::select('operation', ['0' => 'All', 'Buy' => 'Buy', 'Rent' => 'Rent']) }}
+            {{ Form::select('operation', $operation) }}
 
             {{ Form::submit('Search') }}
             {!! Form::close() !!}
@@ -37,11 +37,15 @@
                     <div class="col-8">
                         <sup>Created at : {{ $houses[$i]['created_at'] }} / Updated at
                             : {{ $houses[$i]['created_at'] }}</sup>
-                        <h6 class="card-title">{{$houses[$i]['house_type']['name']}} - {{ $houses[$i]['desc'] }}</h6>
+                        <h6 class="card-title">{{ $types[$houses[$i]['house_type_id']] }} - {{ $houses[$i]['desc'] }}</h6>
                         <p class="card-text">Address: {{$houses[$i]['address']}}</p>
                         <ul>
-                            <li>Square : {{ $houses[$i]['square'] }}</li>
-                            <li>Price : <b>{{ $houses[$i]['price'] }}</b></li>
+                            <li>Square : {{ $houses[$i]['square'] }} {{ $square[$houses[$i]['square_measure_id']] }}</li>
+                            <li>Price : <b>{{ $houses[$i]['price'] }}$</b>
+                            @if($houses[$i]['operation_measure_id'])
+                                <i>{{ $rent[$houses[$i]['operation_measure_id']] }}</i>
+                            @endif
+                            </li>
                             @if($houses[$i]['openview'])
                                 @if($houses[$i]['openview_min'])
                                     <li>Open view : {{ date('F d, Y', strtotime($houses[$i]['openview'])) }} -

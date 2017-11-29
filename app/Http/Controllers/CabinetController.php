@@ -11,6 +11,7 @@ class CabinetController extends Controller
 {
     public function __construct()
     {
+        parent::__construct();
         $this->middleware('auth');
     }
 
@@ -20,9 +21,14 @@ class CabinetController extends Controller
             return redirect()->route('home')->with(['status' => 'You are not agent!', 'class' => 'danger']);
         }
 
-        $houses = House::where('user_id', Auth::id())->with(['image', 'document', 'houseType', 'watch'])->get()->toArray();
-       // dd($houses);
+        $houses = House::where('user_id', Auth::id())->with(['image', 'document', 'watch'])->get()->toArray();
 
-        return view('cabinet')->with(['houses' => $houses]);
+        return view('cabinet')->with([
+            'houses' => $houses,
+            'types' => $this->types,
+            'rent' => $this->rent,
+            'operation' => $this->operation,
+            'square' => $this->square
+        ]);
     }
 }
