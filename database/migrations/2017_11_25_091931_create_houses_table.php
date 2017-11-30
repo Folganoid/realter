@@ -21,7 +21,7 @@ class CreateHousesTable extends Migration
             $table->double('price', 10, 2);
             $table->double('square', 10,2);
             $table->text('address');
-            $table->string('operation', 4);
+            $table->integer('operation');
             $table->integer('house_type_id')->unsigned();
             $table->dateTime('openview')->nullable();
             $table->integer('openview_min')->nullable();

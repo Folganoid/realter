@@ -2,6 +2,9 @@
 
 return  [
 
+    /**
+     * type of properties - change or add only
+     */
     'types' =>
         [
             '1' => 'House',
@@ -10,8 +13,18 @@ return  [
             '4' => 'Flat'
         ],
 
-    'operation' => ['Rent' , 'Buy', 'Sold'],
+    /**
+     * operation defines
+     */
+    'operation' => [
+        '1' => 'Rent',
+        '2' => 'Buy',
+        '3' => 'Sold'
+    ],
 
+    /**
+     * square measures array - change or add only
+     */
     'square_measure' =>
         [
             '1' => 'm²',
@@ -22,11 +35,15 @@ return  [
             '6' => 'mi²'
         ],
 
+    /**
+     *  rent during measures & math coefficient for search
+     */
     'rent_measure' =>
         [
             '1' => 'daily',
-            '2' => 'monthly',
-            '3' => 'yearly',
+            '7' => 'weakly',
+            '30' => 'monthly',
+            '365' => 'yearly',
         ],
 
     'cash' =>

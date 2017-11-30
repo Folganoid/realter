@@ -14,9 +14,12 @@
             @for($i = 0 ; $i < count($watch); $i++ )
                 <li class="list-group-item">
                     {{ $watch[$i]['house']['name'] }}
-                    {{ $types[$watch[$i]['house']['house_type_id']] }}
-                    {{ $watch[$i]['house']['operation'] }}
-                    {{ $watch[$i]['house']['price'] }}$
+                    ({{ $types[$watch[$i]['house']['house_type_id']] }}) /
+                    {{ $operation[$watch[$i]['house']['operation']] }}
+                    <b>{{ $watch[$i]['house']['price'] }}</b>
+                    @if(isset($watch[$i]['house']['operation_measure_id']))
+                        ({{ $rent[$watch[$i]['house']['operation_measure_id']] }})
+                    @endif
                     <div class="float-right"><a href="{{ route('property.view', ['id' => $watch[$i]['house']['id']]) }}" class="btn btn-primary">View</a></div>
 
                 </li>
@@ -31,7 +34,7 @@
                         <dd><b>{{ $search[$i]['created_at'] }}</b>
 
                         @if(isset($search[$i]['json']->operation))
-                            <i> / Operation:</i> <b>{{ $search[$i]['json']->operation }}</b>
+                            <i> / Operation:</i> <b>{{ $operation[$search[$i]['json']->operation] }}</b>
                         @endif
 
                         @if(isset($search[$i]['json']->type))
@@ -44,12 +47,17 @@
                         @endif
 
                         @if(isset($search[$i]['json']->min) && isset($search[$i]['json']->max))
-                            <dd><i>Price:</i> <b>{{ $search[$i]['json']->min }}$ - {{ $search[$i]['json']->min }}$</b></dd>
+                            <dd><i>Price:</i> <b>{{ $search[$i]['json']->min }} - {{ $search[$i]['json']->max }}</b>
                         @elseif(isset($search[$i]['json']->min))
-                            <dd><i>Price above:</i> <b>{{ $search[$i]['json']->min }}$</b></dd>
+                            <dd><i>Price above:</i> <b>{{ $search[$i]['json']->min }}$</b>
                         @elseif(isset($search[$i]['json']->max))
-                            <dd><i>Price less than:</i> <b>{{ $search[$i]['json']->max }}$</b></dd>
+                            <dd><i>Price less than:</i> <b>{{ $search[$i]['json']->max }}</b>
                         @endif
+
+                        @if(isset($search[$i]['json']->operation_measure_id))
+                            ({{ $rent[$search[$i]['json']->operation_measure_id] }})
+                        @endif
+                            </dd>
 
                     </li>
                     @endfor

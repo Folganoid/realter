@@ -22,25 +22,7 @@ class Controller extends BaseController
     {
         $this->square = Config::get('settings.square_measure');
         $this->rent = Config::get('settings.rent_measure');
-        $this->operation = $this->getOperation();
+        $this->operation = Config::get('settings.operation');;
         $this->types = Config::get('settings.types');
-    }
-
-    /**
-     * convert operations type array TO form select field
-     *
-     * @return array
-     */
-    protected function getOperation() {
-
-        $op = Config::get('settings.operation');
-        $result = [];
-
-        for ( $i = 0 ; $i < count($op); $i++ ) {
-            $result[$op[$i]] = $op[$i];
-        }
-
-        return $result;
-
     }
 }

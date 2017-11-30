@@ -5,7 +5,7 @@
     <br>
 
     <div class="card">
-        <h5 class="card-header">{{ $property['name'] }} - <b>({{ $property['operation'] }})</b></h5>
+        <h5 class="card-header">{{ $property['name'] }} - <b>({{ $operation[$property['operation']] }})</b></h5>
         <div class="card-body row">
             <div class="col-8">
                 <sup>Created at : {{ $property['created_at'] }} / Updated at

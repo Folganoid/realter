@@ -23,7 +23,7 @@ class PropertyController extends Controller
 
         return view('property_add')->with([
             'types' => $this->types,
-            'rent' => $this->rent,
+            'rent' => (['0' => ''] + $this->rent),
             'operation' => $this->operation,
             'square' => $this->square
         ]);
@@ -56,8 +56,8 @@ class PropertyController extends Controller
             'watch' => $watches,
             'types' => $this->types,
             'rent' => $this->rent,
-            'operation' => $this->operation,
-            'square' => $this->square
+            'square' => $this->square,
+            'operation' => $this->operation
         ]);
     }
 

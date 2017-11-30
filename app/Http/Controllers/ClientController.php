@@ -7,7 +7,6 @@ use App\Search;
 use App\Watch;
 use Illuminate\Http\Request;
 use App\User;
-use Illuminate\Support\Facades\Config;
 
 class ClientController extends Controller
 {
@@ -17,15 +16,21 @@ class ClientController extends Controller
         $client = User::where('id' , $id)->with(['house'])->first()->toArray();
         $watch = Watch::where('user_id', $id)->with('house')->get()->toArray();
         $search = Search::where('user_id', $id)->get()->toArray();
-        $types = Config::get('settings.types');;
 
         for($i = 0 ; $i < count($search); $i++) {
             $search[$i]['json'] = json_decode($search[$i]['json']);
         }
 
-      //  dd($search);
+       // dd($this->rent);
 
-        return view('client')->with(['client' => $client, 'watch' => $watch, 'search' => $search, 'types' => $types]);
+        return view('client')->with([
+            'client' => $client,
+            'watch' => $watch,
+            'search' => $search,
+            'types' => $this->types,
+            'rent' => $this->rent,
+            'operation' => $this->operation
+        ]);
     }
 
     public function showAgent($id) {
