@@ -18,7 +18,7 @@ class CreateHousesTable extends Migration
             $table->string('name', 50);
             $table->integer('user_id')->unsigned();
             $table->text('desc');
-            $table->double('price', 10, 2);
+            $table->double('price', 12, 2);
             $table->double('square', 10,2);
             $table->text('address');
             $table->integer('operation');

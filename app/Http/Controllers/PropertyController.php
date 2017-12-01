@@ -69,6 +69,21 @@ class PropertyController extends Controller
      */
     public function save(Request $request)
     {
+        $request->validate([
+            'name' => 'required|max:50',
+            'description' => 'required',
+            'address' => 'required',
+            'openview_min' => 'max:3',
+            'price' => [
+                'required',
+                'regex:/^[1-9]\d{0,10}(?:\.\d{0,2})?$/',
+            ],
+            'square' => [
+                'required',
+                'regex:/^[1-9]\d{0,8}(?:\.\d{0,2})?$/',
+            ],
+
+        ]);
 
         $data = $request->all();
         $timestamp = null;
