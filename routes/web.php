@@ -20,7 +20,9 @@ Route::get('/list', 'ListController@index')->name('list');
 
 Route::prefix('property')->group(function () {
     Route::get('/add', 'PropertyController@add')->name('property.add');
+    Route::get('/edit/{id}', 'PropertyController@edit')->name('property.edit');
     Route::post('/save', 'PropertyController@save')->name('property.save');
+    Route::post('/edit_save', 'PropertyController@editSave')->name('property.edit_save');
     Route::get('/view/{id}', 'PropertyController@view')->name('property.view');
 });
 

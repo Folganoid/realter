@@ -3,7 +3,7 @@
 @section('content')
     <h2>Add property</h2>
 
-    {!! Form::open(['route' => 'property.save', 'method' => 'post']) !!}
+    {!! Form::open(['route' => 'property.save', 'method' => 'post', 'enctype' => "multipart/form-data"]) !!}
 
     {{ Form::label('Name') }}
     {{ Form::text('name', '', ['placeholder' => '50max', 'required' => 'required']) }}
@@ -44,13 +44,10 @@
     </div>
 
     {{ Form::label('Image') }}
-    {{ Form::text('image', '', ['placeholder' => 'Do not work yet']) }}
-    <br>
-    {{ Form::label('Documents') }}
-    {{ Form::text('doc', '', ['placeholder' => 'Do not work yet']) }}
+    {{ Form::file('image') }}
 
     <br>
-    {{ Form::submit('Update') }}
+    {{ Form::submit('Save') }}
     {{ Form::token() }}
 
     {!! Form::close() !!}

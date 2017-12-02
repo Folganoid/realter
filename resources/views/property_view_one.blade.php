@@ -8,8 +8,12 @@
         <h5 class="card-header">{{ $property['name'] }} - <b>({{ $operation[$property['operation']] }})</b></h5>
         <div class="card-body row">
             <div class="col-8">
-                <sup>Created at : {{ $property['created_at'] }} / Updated at
-                    : {{ $property['created_at'] }}</sup>
+
+                @if(Gate::allows('is-admin') || $property['user_id'] == Auth::id())
+                    <a href="{{ route('property.edit', ['id' => $property['id']]) }}" class="btn btn-danger">Edit</a><br>
+                @endif
+
+                <sup>Created at : {{ $property['created_at'] }} / Updated at: {{ $property['created_at'] }}</sup>
                 <h6 class="card-title">{{ $types[$property['house_type_id']] }} - {{ $property['desc'] }}</h6>
                 <p class="card-text">Address: {{$property['address']}}</p>
                 <ul>

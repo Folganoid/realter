@@ -6,8 +6,8 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use App\House_type;
 use Illuminate\Support\Facades\Config;
+
 
 class Controller extends BaseController
 {
@@ -24,5 +24,15 @@ class Controller extends BaseController
         $this->rent = Config::get('settings.rent_measure');
         $this->operation = Config::get('settings.operation');;
         $this->types = Config::get('settings.types');
+
+        require_once base_path('vendor/cloudinary/Cloudinary.php');
+        require_once base_path('vendor/cloudinary/Uploader.php');
+        require_once base_path('vendor/cloudinary/Api.php');
+
+        \Cloudinary::config(array(
+            "cloud_name" => "realtor222",
+            "api_key" => "789844118893569",
+            "api_secret" => "wb6o-wh12avO7yaR_02SfQuIa-k"
+        ));
     }
 }

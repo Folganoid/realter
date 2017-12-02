@@ -33,11 +33,12 @@
                         @endif
                         <li>Watched : {{ count($houses[$i]['watch']) }}</li>
                     </ul>
-                    <a href="{{ route('property.view', ['id' => $houses[$i]['id']]) }}" class="btn btn-primary">More info ...</a> <a href="#" class="btn btn-danger">Edit</a>
+                    <a href="{{ route('property.view', ['id' => $houses[$i]['id']]) }}" class="btn btn-primary">More info ...</a>
+                    <a href="{{ route('property.edit', ['id' => $houses[$i]['id']]) }}" class="btn btn-danger">Edit</a>
                 </div>
                 <div class="col-4">
                     @if(count($houses[$i]['image']) > 0)
-                        <img src="{{ asset( 'img/' . $houses[$i]['image'][0]['path']) }}" class="rounded img-fluid"
+                        <img src="{{ Config::get('settings.cloudinary')['path'] . $houses[$i]['image'][0]['path'] . Config::get('settings.cloudinary')['img_format'] }}" class="rounded img-fluid"
                              alt="{{ $houses[$i]['image'][0]['name'] }}">
                     @else
                         <img src="{{ asset( 'img/none.jpeg') }}" class="rounded img-fluid" alt="No image">
