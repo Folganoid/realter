@@ -14,7 +14,7 @@
             {{ Form::text('name', $property['name'], ['placeholder' => '50max', 'required' => 'required']) }}
             <br>
             {{ Form::label('Description') }}
-            {{ Form::textarea('description', $property['desc'], ['placeholder' => 'enter text', 'required' => 'required']) }}
+            {{ Form::textarea('description', $property['desc'], ['placeholder' => 'enter text', 'rows' => 3, 'required' => 'required']) }}
             <br>
             {{ Form::label('Price') }}
             {{ Form::text('price', $property['price'], ['placeholder' => '100000.00', 'size' => 8, 'required' => 'required', 'pattern' => '^[1-9]\d{0,7}(?:\.\d{0,2})?$', 'title' => '10 digits max . 2 digits max']) }}
@@ -52,7 +52,7 @@
             {{ Form::label('Add images') }}
             {{ Form::file('image[]', ['multiple' => true]) }}
             <br>
-            {{ Form::label('Add documents') }}
+            {{ Form::label('Add documents (IMG / PDF)') }}
             {{ Form::file('document[]', ['multiple' => true]) }}
 
             {{ Form::hidden('id', $property['id']) }}
@@ -62,8 +62,15 @@
             <br>
             {{ Form::submit('Update', ['class' => 'btn btn-primary']) }}
             {{ Form::token() }}
-
             {!! Form::close() !!}
+
+            <br>
+            {!! Form::open(['route' => ['property.delete', $property['id']], 'method' => 'post']) !!}
+            {{ Form::submit('Delete property and all relationships', ['class' => 'btn btn-danger']) }}
+            {{ Form::token() }}
+            {!! Form::close() !!}
+
+
         </div>
         <div class="col-6">
             <h3>Images</h3>
@@ -74,7 +81,7 @@
                 @for ( $i = 0 ; $i < count($property['image']) ; $i++)
                     <tr>
                         <td>
-                            <img src="{{ Config::get('settings.cloudinary')['path'] . $property['image'][$i]['path'] . Config::get('settings.cloudinary')['img_format'] }}"
+                            <img src="{{ Config::get('settings.cloudinary')['path'] . $property['image'][$i]['path'] }}"
                                  class="rounded img-fluid"
                                  alt="{{ $property['image'][$i]['name'] }}" width="100" />
                         </td>
@@ -88,7 +95,29 @@
             @endfor
             </table>
             @else
-                <h4>No images</h4>
+                <h6>No images</h6>
+            @endif
+            <br>
+            <h3>Documents</h3>
+            <br>
+
+            @if(!empty($property['document']))
+                <table>
+                    @for ( $i = 0 ; $i < count($property['document']) ; $i++)
+                        <tr>
+                            <td>
+                                <a href="{{ Config::get('settings.cloudinary')['path'] . $property['document'][$i]['path'] }}">View... </a>
+                            </td>
+                            <td>
+                                <input id="{{ 'document_name' . $property['document'][$i]['id'] }}" value="{{ $property['document'][$i]['name'] }}" required/>
+                                <button class="btn btn-primary document_edit" value="{{ $property['document'][$i]['id'] }}">Edit</button> <span class = "doc_edit_msg" id="{{ 'doc_edit_msg' . $property['document'][$i]['id'] }}"></span>
+                                <button class="btn btn-danger document_delete" value="{{ $property['document'][$i]['id'] }}">Delete</button>  <span class = "doc_delete_msg" id="{{ 'doc_delete_msg' . $property['document'][$i]['id'] }}"></span>
+                            </td>
+                        </tr>
+                    @endfor
+                </table>
+            @else
+                <h6>No documents</h6>
             @endif
 
         </div>

@@ -1,5 +1,8 @@
 $(document).ready(function () {
 
+    /**
+     * edit image name
+      */
     $('.image_edit').click(function() {
         var imageId = $(this).val();
         var imageName = $('#name' + imageId).val();
@@ -24,6 +27,10 @@ $(document).ready(function () {
 
     });
 
+
+    /**
+     * delete image
+     */
     $('.image_delete').click(function() {
         var imageId = $(this).val();
 
@@ -44,6 +51,54 @@ $(document).ready(function () {
 
 
 
+    })
+
+    /**
+     * edit document name
+     */
+    $('.document_edit').click(function() {
+        var docId = $(this).val();
+        var docName = $('#document_name' + docId).val();
+
+        $.ajax({
+            type: "POST",
+            url: "/document/edit",
+            cache: false,
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            data: {"id": docId, "name": docName},
+            dataType: 'json',
+            success: function (html) {
+                var status = JSON.parse(html).status;
+
+                (status == 'ok') ? $('.doc_edit_msg').css('color', 'green') : $('doc_.edit_msg').css('color', 'red');
+                $('#doc_edit_msg' + docId).html(status);
+            }
+        });
+    });
+
+
+    /**
+     * delete document
+     */
+    $('.document_delete').click(function() {
+        var docId = $(this).val();
+
+        $.ajax({
+            type: "POST",
+            url: "/document/delete/" + docId,
+            cache: false,
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function (html) {
+                var status = JSON.parse(html).status;
+
+                (status == 'ok') ? $('.doc_delete_msg').css('color', 'green') : $('.doc_delete_msg').css('color', 'red');
+                $('#doc_delete_msg' + docId).html(status);
+            }
+        });
     })
 
 });

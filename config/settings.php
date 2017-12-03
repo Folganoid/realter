@@ -50,8 +50,6 @@ return  [
         [
             'max_width' => '800',
             'path' => 'http://res.cloudinary.com/realtor222/image/upload/',
-            'img_format' => '.jpg',
-
         ]
 
 

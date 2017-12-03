@@ -43,8 +43,15 @@
         @endif
     </div>
 
+    <div class="form-group{{ $errors->has('image') ? ' color_red' : '' }}">
     {{ Form::label('Image') }}
     {{ Form::file('image') }}
+
+        @if ($errors->has('image'))
+            <br>
+            <b class="help-block">2MB maximum size !</b>
+        @endif
+    </div>
 
     <br>
     {{ Form::submit('Save') }}

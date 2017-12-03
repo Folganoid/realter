@@ -2,17 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\House;
-use App\Image;
+use App\Document;
 use Illuminate\Http\Request;
+use App\House;
 use Auth;
 use Gate;
 use League\Flysystem\Exception;
 
-class ImageController extends Controller
+
+class DocumentController extends Controller
 {
     /**
-     * delete img from cloud & DB
+     * delete doc from cloud & DB
      *
      * @param int $id
      * @return \Illuminate\Http\JsonResponse
@@ -20,8 +21,9 @@ class ImageController extends Controller
     public function delete($id) {
 
         try {
-            $img = Image::find($id);
-            $house = House::find($img->house_id);
+            $doc = Document::find($id);
+            $house = House::find($doc->house_id);
+
 
             if ($house->user_id != Auth::id()) {
                 if (Gate::denies('is-admin')) {
@@ -29,8 +31,8 @@ class ImageController extends Controller
                 }
             }
 
-            \Cloudinary\Uploader::destroy(substr($img->path, 0, strrpos($img->path, '.')));
-            $img->delete();
+            \Cloudinary\Uploader::destroy(substr($doc->path, 0, strrpos($doc->path, '.')));
+            $doc->delete();
             return response()->json('{"status": "ok"}');
         }
         catch (Exception $e){
@@ -39,7 +41,7 @@ class ImageController extends Controller
     }
 
     /**
-     * update image name
+     * update doc name
      *
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
@@ -48,9 +50,9 @@ class ImageController extends Controller
 
         try {
             $data = $request->all();
-            $img = Image::find($data['id']);
+            $doc = Document::find($data['id']);
 
-            $house = House::find($img->house_id);
+            $house = House::find($doc->house_id);
 
             if ($house->user_id != Auth::id()) {
                 if (Gate::denies('is-admin')) {
@@ -58,8 +60,8 @@ class ImageController extends Controller
                 }
             }
 
-            $img->name = ($data['name']) ?? '';
-            $img->save();
+            $doc->name = ($data['name']) ?? '';
+            $doc->save();
 
             return response()->json('{"status": "ok"}');
         }

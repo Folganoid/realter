@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Document;
 use App\House;
 use App\Image;
 use App\Watch;
@@ -20,7 +21,6 @@ class PropertyController extends Controller
      */
     public function add()
     {
-
         if (Gate::denies('is-agent')) {
             return redirect()->route('home')->with(['status' => 'You are not agent!', 'class' => 'danger']);
         }
@@ -95,6 +95,7 @@ class PropertyController extends Controller
                 'required',
                 'regex:/^[1-9]\d{0,8}(?:\.\d{0,2})?$/',
             ],
+            'image' => 'max:2000000'
         ]);
 
         $data = $request->all();
@@ -118,6 +119,52 @@ class PropertyController extends Controller
 
         return redirect()->route('cabinet')->with(['status' => 'Property added', 'class' => 'success']);
     }
+
+
+    /**
+     * delete property by id
+     *
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function delete($id) {
+
+        $property = House::find($id);
+
+        if ($property['user_id'] != Auth::id()) {
+            if (Gate::denies('is-admin')) {
+                return redirect()->route('home')->with(['status' => 'Access denied', 'class' => 'danger']);
+            }
+        }
+
+        $tmpArr = [];
+
+        try {
+            $docs = Document::where('house_id', $id)->select('path')->get()->toArray();
+            for ($i = 0; $i < count($docs); $i++) {
+                $tmpArr[] = substr($docs[$i]['path'], 0, strrpos($docs[$i]['path'], '.'));
+            }
+
+            $imgs = Image::where('house_id', $id)->select('path')->get()->toArray();
+            for ($i = 0; $i < count($imgs); $i++) {
+                $tmpArr[] = substr($imgs[$i]['path'], 0, strrpos($imgs[$i]['path'], '.'));
+            }
+
+            Watch::where('house_id', $id)->delete();
+            Document::where('house_id', $id)->delete();
+            Image::where('house_id', $id)->delete();
+            House::destroy($id);
+
+            $cloud = new \Cloudinary\Api();
+            $cloud->delete_resources($tmpArr);
+        }
+        catch(Exception $e) {
+            return redirect()->route('cabinet')->with(['status' => 'Property did not delete!', 'class' => 'danger']);
+        }
+
+        return redirect()->route('cabinet')->with(['status' => 'Property was deleted', 'class' => 'success']);
+    }
+
 
     /**
      * property edit page
@@ -162,6 +209,8 @@ class PropertyController extends Controller
                 'required',
                 'regex:/^[1-9]\d{0,8}(?:\.\d{0,2})?$/',
             ],
+            'image' => 'max:2000000',
+            'document' => 'max:2000000'
         ]);
 
         $data = $request->all();
@@ -177,38 +226,39 @@ class PropertyController extends Controller
         if(!$save) return redirect()->route('property.view', ['id' => $data['id']])->with(['status' => 'Access denied', 'class' => 'danger']);
 
         $errors = 0;
-
-            for ($z = 0 ; $z < count($data['image']); $z++) {
+        /**
+         * save images
+         */
+        if(isset($data['image'])) {
+            for ($z = 0; $z < count($data['image']); $z++) {
                 try {
                     $this->saveImage($data, $data['id'], $data['image'][$z]);
-                }
-                catch (Exception $e) {
+                } catch (Exception $e) {
+                    $errors++;
+                };
+            }
+        }
+
+        /**
+         * save docs
+         */
+        if(isset($data['document'])) {
+
+            for ($d = 0; $d < count($data['document']); $d++) {
+                try {
+                    $this->saveDocument($data, $data['id'], $data['document'][$d]);
+                } catch (Exception $e) {
                     $errors++;
                 };
             }
 
-        if ($errors > 0) {
-           return redirect()->route('property.view', ['id' => $data['id']])->with(['status' => $errors . ' images not loaded !', 'class' => 'danger']);
+            if ($errors > 0) {
+                return redirect()->route('property.view', ['id' => $data['id']])->with(['status' => $errors . ' files not loaded ! (bad format or filesize over 2MB)', 'class' => 'danger']);
+            }
         }
 
         return redirect()->route('property.view', ['id' => $data['id']])->with(['status' => 'Data changed', 'class' => 'success']);
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     /**
      * save to housetale & return last ID
@@ -265,22 +315,49 @@ class PropertyController extends Controller
                 "format" => "jpg"
             ]);
         } catch (\Exception $e) {
-            //throw new return redirect()->route('property.add')->with(['status' => 'Can not upload image', 'class' => 'danger']);
             throw new Exception('Can not upload Image');
         }
 
         try {
             $image = new Image();
             $image->name = $data['name'];
-            $image->path = $result['public_id'];
+            $image->path = $result['public_id']. '.' . $result['format'];
             $image->house_id = $id;
             $image->save();
 
         } catch (Exception $e) {
             throw new Exception('Can not upload in Data Base');
-          //  return redirect()->route('property.add')->with(['status' => 'Can not upload in Data Base', 'class' => 'danger']);
         }
 
+    }
+
+    /**
+     * save document to cloud & db
+     *
+     * @param $data
+     * @param $id
+     * @param $doc
+     * @throws Exception
+     */
+    public function saveDocument($data, $id, $doc) {
+
+        try {
+            $result = \Cloudinary\Uploader::upload($doc);
+        } catch (\Exception $e) {
+            throw new Exception('Can not upload Document');
+        }
+
+        try {
+
+            $document = new Document();
+            $document->name = $data['name'];
+            $document->path = $result['public_id'] . '.' . $result['format'];
+            $document->house_id = $id;
+            $document->save();
+
+        } catch (Exception $e) {
+            throw new Exception('Can not upload in Data Base');
+        }
 
     }
 }
