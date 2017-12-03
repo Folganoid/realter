@@ -52,8 +52,10 @@ class PropertyController extends Controller
             /**
              * if user has entered today
              */
-            $watchToday = Watch::where('user_id', '=', Auth::id())->where('house_id', '=', $id)->where('created_at', 'like', substr(date(now()), 0, 10) . '%')->first();
-
+            $watchToday = Watch::where('user_id', '=', Auth::id())->where('house_id', '=', $id)->
+            where('created_at', '>', substr(date(now()), 0, 10) . ' 00:00:00')->
+            where('created_at', '<', substr(date(now()), 0, 10) . ' 23:59:59')->
+            first();
             $watch = (!empty($watchToday)) ? $watchToday : new Watch();
             $watch->house_id = $id;
             $watch->user_id = Auth::id();

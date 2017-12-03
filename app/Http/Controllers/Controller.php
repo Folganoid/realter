@@ -8,7 +8,6 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Facades\Config;
 
-
 class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
@@ -24,10 +23,6 @@ class Controller extends BaseController
         $this->rent = Config::get('settings.rent_measure');
         $this->operation = Config::get('settings.operation');;
         $this->types = Config::get('settings.types');
-
-        require_once base_path('vendor/cloudinary/Cloudinary.php');
-        require_once base_path('vendor/cloudinary/Uploader.php');
-        require_once base_path('vendor/cloudinary/Api.php');
 
         \Cloudinary::config(array(
             "cloud_name" => "realtor222",

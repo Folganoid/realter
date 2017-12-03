@@ -1,9 +1,6 @@
 @extends('layouts.main')
 
 @section('content')
-
-
-
     <br>
     <div class="card">
         <h5 class="card-header">{{ $property['name'] }} - <b>({{ $operation[$property['operation']] }})</b></h5>
@@ -39,8 +36,9 @@
 
                     <p><b>Agent:</b> <a href="{{ route('agent', ['id' => $property['user_id']]) }}">{{ $property['user']['name'] . ' ' . $property['user']['surname'] }}</a></p>
 
-                <h5>Watched ({{ count($property['watch']) }}):</h5>
-                @if(count($watch) > 0)
+                <h5>Watched ({{ (!empty($property['watch'])) ? count($property['watch']) : 0}}):</h5>
+                @if(!empty($watch))
+                    @if(count($watch) > 0)
                     <table class="table table-striped">
                         <thead>
                         <tr>
@@ -65,11 +63,12 @@
                         @endfor
                         </tbody>
                     </table>
+                    @endif
                 @endif
 
             </div>
             <div class="col-6">
-
+                @if($property['image'])
                 @if(count($property['image']) == 1)
                     <img class="rounded img-fluid" src="{{ Config::get('settings.cloudinary')['path'] . $property['image'][0]['path'] }}"
                          alt="{{ $property['image'][0]['name'] }}">
@@ -111,10 +110,12 @@
                             <span class="sr-only">Next</span>
                         </a>
                     </div>
+                @endif
                 @else
                     <img src="{{ asset( 'img/none.jpeg') }}" class="rounded img-fluid" alt="No image">
                 @endif
 
+            @if($property['document'])
                 @if(count($property['document']) > 0)
                     <br>
                     <h5>Documents:</h5>
@@ -124,6 +125,7 @@
                         @endfor
                     </ul>
                 @endif
+            @endif
 
             </div>
         </div>
