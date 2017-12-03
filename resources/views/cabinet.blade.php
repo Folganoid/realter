@@ -16,7 +16,7 @@
                     <ul>
                         <li>Square : {{ $houses[$i]['square'] }} {{ $square[$houses[$i]['square_measure_id']] }}</li>
                         <li>Price : <b>{{ $houses[$i]['price'] }}</b>
-                            @if($houses[$i]['operation_measure_id'])
+                            @if($houses[$i]['operation_measure_id'] && ($houses[$i]['operation'] == 1))
                                 <i>{{ $rent[$houses[$i]['operation_measure_id']] }}</i>
                             @endif
                         </li>

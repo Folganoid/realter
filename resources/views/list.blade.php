@@ -46,7 +46,7 @@
                         <ul>
                             <li>Square : {{ $houses[$i]['square'] }} {{ $square[$houses[$i]['square_measure_id']] }}</li>
                             <li>Price : <b>{{ $houses[$i]['price'] }}$</b>
-                            @if($houses[$i]['operation_measure_id'])
+                                @if($houses[$i]['operation_measure_id'] && ($houses[$i]['operation'] == 1))
                                 <i>{{ $rent[$houses[$i]['operation_measure_id']] }}</i>
                             @endif
                             </li>
@@ -68,7 +68,7 @@
                     </div>
                     <div class="col-4">
                         @if(count($houses[$i]['image']) > 0)
-                            <img src="{{ asset( 'img/' . $houses[$i]['image'][0]['path']) }}" class="rounded img-fluid"
+                            <img src="{{ Config::get('settings.cloudinary')['path'] . $houses[$i]['image'][0]['path'] . Config::get('settings.cloudinary')['img_format'] }}" class="rounded img-fluid"
                                  alt="{{ $houses[$i]['image'][0]['name'] }}">
                         @else
                             <img src="{{ asset( 'img/none.jpeg') }}" class="rounded img-fluid" alt="No image">

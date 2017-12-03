@@ -34,5 +34,10 @@ Route::prefix('admin')->group(function () {
 Route::get('/client/{id}', 'ClientController@showClient')->name('client');
 Route::get('/agent/{id}', 'ClientController@showAgent')->name('agent');
 
+Route::prefix('image')->group(function () {
+    Route::post('/delete/{id}', 'ImageController@delete')->name('image.delete');
+    Route::post('/edit', 'ImageController@edit')->name('image.edit');
+});
+
 
 

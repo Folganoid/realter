@@ -48,7 +48,13 @@ class PropertyController extends Controller
         }
 
         if (Auth::check() && $property['user_id'] != Auth::id()) {
-            $watch = new Watch();
+
+            /**
+             * if user has entered today
+             */
+            $watchToday = Watch::where('user_id', '=', Auth::id())->where('house_id', '=', $id)->where('created_at', 'like', substr(date(now()), 0, 10) . '%')->first();
+
+            $watch = (!empty($watchToday)) ? $watchToday : new Watch();
             $watch->house_id = $id;
             $watch->user_id = Auth::id();
             $watch->created_at = date(now());
@@ -101,32 +107,12 @@ class PropertyController extends Controller
          */
         if ($request->file('image')) {
             if ($request->file('image')->isValid()) {
-
-                $img = $request->file('image');
-
                 try {
-                    $width = getimagesize($img)[0];
-                    $result = \Cloudinary\Uploader::upload($img, [
-                        "crop" => "fill",
-                        "width" => ($width < Config::get('settings.cloudinary')['max_width']) ? $width : Config::get('settings.cloudinary')['max_width'],
-                        "format" => "jpg"
-                    ]);
-                } catch (\Exception $e) {
-                    return redirect()->route('property.add')->with(['status' => 'Can not upload image', 'class' => 'danger']);
+                    $this->saveImage($data, $lastId, $data['image']);
                 }
-
-                // $aa = new \Cloudinary\Api();
-                //   $aa->delete_resources(['xgepjajel1unmvwgptup']);
-
-                try {
-                    $image = new Image();
-                    $image->name = $data['name'];
-                    $image->path = $result['public_id'];
-                    $image->house_id = $lastId;
-                    $image->save();
-                } catch (Exception $e) {
-                    return redirect()->route('property.add')->with(['status' => 'Can not upload in Data Base', 'class' => 'danger']);
-                }
+                catch (Exception $e) {
+                    return redirect()->route('cabinet')->with(['status' => $e->getMessage(), 'class' => 'danger']);
+                };
             }
         }
 
@@ -141,7 +127,6 @@ class PropertyController extends Controller
      */
     public function edit($id)
     {
-
         $property = House::where('id', $id)->with(['image', 'document'])->first()->toArray();
 
         if ($property['user_id'] != Auth::id()) {
@@ -153,7 +138,7 @@ class PropertyController extends Controller
         return view('property_edit')->with([
             'property' => $property,
             'types' => $this->types,
-            'rent' => $this->rent,
+            'rent' => (['0' => ''] + $this->rent),
             'square' => $this->square,
             'operation' => $this->operation
         ]);
@@ -161,7 +146,6 @@ class PropertyController extends Controller
 
     public function editSave(Request $request)
     {
-
         /**
          * validator
          */
@@ -183,19 +167,48 @@ class PropertyController extends Controller
         $data = $request->all();
         $house = House::find($data['id']);
 
-
         if ($house['user_id'] != Auth::id()) {
             if (Gate::denies('is-admin')) {
-                return redirect()->route('home')->with(['status' => 'You do not have access', 'class' => 'danger']);
+                return redirect()->route('property.view', ['id' => $data['id']])->with(['status' => 'You do not have access', 'class' => 'danger']);
             }
         }
 
         $save = $this->saveToHouseTable($data, $house);
         if(!$save) return redirect()->route('property.view', ['id' => $data['id']])->with(['status' => 'Access denied', 'class' => 'danger']);
 
-        return redirect()->route('property.view', ['id' => $data['id']])->with(['status' => 'Data changed', 'class' => 'success']);
+        $errors = 0;
 
+            for ($z = 0 ; $z < count($data['image']); $z++) {
+                try {
+                    $this->saveImage($data, $data['id'], $data['image'][$z]);
+                }
+                catch (Exception $e) {
+                    $errors++;
+                };
+            }
+
+        if ($errors > 0) {
+           return redirect()->route('property.view', ['id' => $data['id']])->with(['status' => $errors . ' images not loaded !', 'class' => 'danger']);
+        }
+
+        return redirect()->route('property.view', ['id' => $data['id']])->with(['status' => 'Data changed', 'class' => 'success']);
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     /**
      * save to housetale & return last ID
@@ -212,6 +225,7 @@ class PropertyController extends Controller
         }
 
         $house->name = $data['name'];
+        $house->user_id = (isset($data['user_id'])) ? $data['user_id'] : Auth::id();
         $house->desc = $data['description'];
         $house->price = $data['price'];
         $house->square = $data['square'];
@@ -224,14 +238,49 @@ class PropertyController extends Controller
         $house->operation_measure_id = ($data['rent_measure'] > 0) ? $data['rent_measure'] : null;
         $house->square_measure_id = $data['square_measure'];
 
-
         if ($house->user_id != Auth::id()) {
-          //  if (Gate::denies('is-admin')) {
+            if (Gate::denies('is-admin')) {
                 return false;
             }
-      //  }
+        }
 
         $house->save();
         return $house->id;
+    }
+
+    /**
+     * save image to cloud & DB
+     *
+     * @param $data
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function saveImage($data, $id, $img) {
+
+        try {
+            $width = getimagesize($img)[0];
+            $result = \Cloudinary\Uploader::upload($img, [
+                "crop" => "fill",
+                "width" => ($width < Config::get('settings.cloudinary')['max_width']) ? $width : Config::get('settings.cloudinary')['max_width'],
+                "format" => "jpg"
+            ]);
+        } catch (\Exception $e) {
+            //throw new return redirect()->route('property.add')->with(['status' => 'Can not upload image', 'class' => 'danger']);
+            throw new Exception('Can not upload Image');
+        }
+
+        try {
+            $image = new Image();
+            $image->name = $data['name'];
+            $image->path = $result['public_id'];
+            $image->house_id = $id;
+            $image->save();
+
+        } catch (Exception $e) {
+            throw new Exception('Can not upload in Data Base');
+          //  return redirect()->route('property.add')->with(['status' => 'Can not upload in Data Base', 'class' => 'danger']);
+        }
+
+
     }
 }
