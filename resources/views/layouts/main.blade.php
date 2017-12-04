@@ -70,6 +70,12 @@
 </nav>
 
 <div class="container">
+    @if(Auth::check() && Gate::denies('is-verify'))
+        <div class="alert alert-warning }}">
+            <b>Check Email and verify your account!</b>
+        </div>
+    @endif
+
     @if (session('status'))
         <div class="alert alert-{{ session('class') }}">
             {{ session('status') }}

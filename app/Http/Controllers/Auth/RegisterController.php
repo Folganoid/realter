@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Mail\VerifyMail;
 use App\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use League\Flysystem\Exception;
+use Mail;
 
 class RegisterController extends Controller
 {
@@ -65,6 +68,13 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+        try {
+            $this->sendVerifyEmail($data['name'], $data['email']);
+        }
+        catch (Exception $e) {
+            return redirect()->route('register')->with(['status' => 'Can not send Email !', 'class' => 'danger']);
+        }
+
         return User::create([
             'name' => $data['name'],
             'surname' => $data['surname'],
@@ -73,6 +83,26 @@ class RegisterController extends Controller
             'role' => $data['role'],
             'status' => 1,
             'password' => bcrypt($data['password']),
+            'verify_string' => md5($data['name'] . $data['email']),
+            'verify' => 0,
         ]);
     }
+
+    /**
+     * send verify email
+     *
+     * @param $name
+     * @param $email
+     */
+    public function sendVerifyEmail($name, $email)
+    {
+        $secret = md5($name . $email);
+        $data = array (
+            'secret' => route('verify', ['secret' => $secret]),
+        );
+        Mail::to($email)->send(new VerifyMail($data['secret']));
+    }
+
 }
+
+

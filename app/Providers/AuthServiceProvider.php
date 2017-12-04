@@ -32,6 +32,12 @@ class AuthServiceProvider extends ServiceProvider
             return FALSE;
         });
 
+        Gate::define('is-verify', function (User $user) {
+
+            if ($user->verify == 1) return TRUE;
+            return FALSE;
+        });
+
         Gate::define('is-admin', function (User $user) {
 
             if ($user->role == 10) return TRUE;

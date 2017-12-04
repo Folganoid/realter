@@ -14,6 +14,10 @@
 Auth::routes();
 
 Route::get('/', 'HomeController@index')->name('home');
+Route::get('/verify', 'VerifyController@index')->name('verify');
+
+
+
 
 Route::get('/cabinet', 'CabinetController@index')->name('cabinet');
 Route::get('/list', 'ListController@index')->name('list');
