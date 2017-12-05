@@ -3,6 +3,7 @@
 @section('content')
 
     <script src="{{ asset('js/property_edit.js') }}"></script>
+    <script src="{{ asset('js/rent.js') }}"></script>
 
     <h2>Edit property {{ $property['name'] }}</h2>
 
@@ -21,8 +22,8 @@
             $
             <br>
             {{ Form::label('Operation') }}
-            {{ Form::select('operation', $operation, $property['operation']) }}
-            {{ Form::select('rent_measure', $rent, $property['operation_measure_id']) }}
+            {{ Form::select('operation', $operation, $property['operation'], ['class' => 'list_operation']) }}
+            {{ Form::select('rent_measure', $rent, $property['operation_measure_id'], ['class' => 'list_rent']) }}
             <br>
             {{ Form::label('Square') }}
             {{ Form::text('square', $property['square'], ['placeholder' => '1000.00', 'size' => 6, 'required' => 'required', 'pattern' => '^[1-9]\d{0,7}(?:\.\d{0,2})?$']) }}

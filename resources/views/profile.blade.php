@@ -7,7 +7,7 @@
     {!! Form::open(['route' => 'profile.change', 'method' => 'post']) !!}
 
     {{ Form::label('Name') }}
-    {{ Form::text('name', $user->name, ['placeholder' => 'Name', 'required' => true]) }}
+    {{ Form::text('name', $user->name, ['placeholder' => 'Name', 'required' => 'required']) }}
     @if ($errors->has('name'))
         <span class="help-block color_red">
            <strong>{{ $errors->first('name') }}</strong>
@@ -15,7 +15,7 @@
     @endif
     <br>
     {{ Form::label('Surname') }}
-    {{ Form::text('surname', $user->surname, ['placeholder' => 'Surname']) }}
+    {{ Form::text('surname', $user->surname, ['placeholder' => 'Surname', 'required' => 'required' ]) }}
     @if ($errors->has('surname'))
         <span class="help-block color_red">
            <strong>{{ $errors->first('surname') }}</strong>
@@ -23,7 +23,7 @@
     @endif
     <br>
     {{ Form::label('Telephone') }}
-    {{ Form::text('tel', $user->tel, ['placeholder' => 'Telephone']) }}
+    {{ Form::text('tel', $user->tel, ['placeholder' => 'Telephone', 'required' => 'required']) }}
     @if ($errors->has('tel'))
         <span class="help-block color_red">
            <strong>{{ $errors->first('tel') }}</strong>
@@ -31,7 +31,7 @@
     @endif
     <br>
     {{ Form::label('Email') }}
-    {{ Form::email('email', $user->email, ['placeholder' => 'Email']) }}
+    {{ Form::email('email', $user->email, ['placeholder' => 'Email', 'required' => 'required']) }}
     @if ($errors->has('email'))
         <span class="help-block color_red">
            <strong>{{ $errors->first('email') }}</strong>
@@ -39,7 +39,7 @@
     @endif
     <br>
     {{ Form::label('Old password') }}
-    {{ Form::password('pass_old') }}
+    {{ Form::password('pass_old', ['required' => 'required']) }}
     <br>
     {{ Form::label('New password') }}
     {{ Form::password('pass') }}

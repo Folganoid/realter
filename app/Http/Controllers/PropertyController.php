@@ -27,7 +27,7 @@ class PropertyController extends Controller
 
         return view('property_add')->with([
             'types' => $this->types,
-            'rent' => (['0' => ''] + $this->rent),
+            'rent' => $this->rent,
             'operation' => $this->operation,
             'square' => $this->square
         ]);
@@ -187,7 +187,7 @@ class PropertyController extends Controller
         return view('property_edit')->with([
             'property' => $property,
             'types' => $this->types,
-            'rent' => (['0' => ''] + $this->rent),
+            'rent' => $this->rent,
             'square' => $this->square,
             'operation' => $this->operation
         ]);
@@ -287,7 +287,7 @@ class PropertyController extends Controller
         $house->house_type_id = $data['house_type_id'];
         $house->openview = $timestamp;
         $house->openview_min = ($timestamp) ? $data['openview_min'] : null;
-        $house->operation_measure_id = ($data['rent_measure'] > 0) ? $data['rent_measure'] : null;
+        $house->operation_measure_id = (isset($data['rent_measure'])) ? $data['rent_measure'] : null;
         $house->square_measure_id = $data['square_measure'];
 
         if ($house->user_id != Auth::id()) {

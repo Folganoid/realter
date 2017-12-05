@@ -10,7 +10,7 @@
             <div class="card-body row">
                 <div class="col-8">
                     <sup>Created at : {{ $houses[$i]['created_at'] }} / Updated at
-                        : {{ $houses[$i]['created_at'] }}</sup>
+                        : {{ $houses[$i]['updated_at'] }}</sup>
                     <h6 class="card-title">{{ $types[$houses[$i]['house_type_id']] }} - {{ $houses[$i]['desc'] }}</h6>
                     <p class="card-text">Address: {{$houses[$i]['address']}}</p>
                     <ul>
@@ -37,12 +37,14 @@
                     <a href="{{ route('property.edit', ['id' => $houses[$i]['id']]) }}" class="btn btn-danger">Edit</a>
                 </div>
                 <div class="col-4">
+                    <div align="center">
                     @if(count($houses[$i]['image']) > 0)
                         <img src="{{ Config::get('settings.cloudinary')['path'] . $houses[$i]['image'][0]['path'] }}" class="rounded img-fluid"
                              alt="{{ $houses[$i]['image'][0]['name'] }}">
                     @else
                         <img src="{{ asset( 'img/none.jpeg') }}" class="rounded img-fluid" alt="No image">
                     @endif
+                    </div>
                 </div>
             </div>
         </div>

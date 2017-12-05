@@ -5,7 +5,7 @@
     <br>
     <dd>Registered: {{ $client['created_at'] }}</dd>
     <dd>Telephone: {{ $client['tel'] }}</dd>
-    <dd>Email: {{ $client['email'] }} <button>Send Email (don't wrk yet)</button></dd>
+    <dd>Email: <b>{{ $client['email'] }}</b></dd>
     <br>
     <div class="row">
         <div class="col-6">

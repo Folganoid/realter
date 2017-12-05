@@ -14,3 +14,20 @@
             -1px 1px 0 #000,
             1px 1px 0 #000;
 }
+
+.carousel-item {
+
+}
+
+
+.carousel-item > img {
+
+    width: auto;
+    display: block;
+    max-height: 20em;
+
+}
+
+.carousel-control-next-icon {
+    background-color: #0000F0;
+}

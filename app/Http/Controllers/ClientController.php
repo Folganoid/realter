@@ -7,6 +7,8 @@ use App\Search;
 use App\Watch;
 use Illuminate\Http\Request;
 use App\User;
+use App\House;
+use Auth;
 
 class ClientController extends Controller
 {
@@ -35,6 +37,16 @@ class ClientController extends Controller
 
     public function showAgent($id) {
 
-        return view('agent')->with(['id' => $id]);
+        $agent = User::find($id);
+        $houses = House::where('user_id', $id)->with(['image', 'document', 'watch'])->get()->toArray();
+
+        return view('agent')->with([
+            'agent' => $agent,
+            'houses' => $houses,
+            'types' => $this->types,
+            'rent' => $this->rent,
+            'operation' => $this->operation,
+            'square' => $this->square,
+        ]);
     }
 }
