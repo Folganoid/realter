@@ -103,7 +103,7 @@ class PropertyController extends Controller
         $data = $request->all();
         $lastId = $this->saveToHouseTable($data, new House());
 
-        if(!$lastId) redirect()->route('property.view', ['id' => $data['id']])->with(['status' => 'Error', 'class' => 'danger']);
+        if(!$lastId) return redirect()->route('property.view', ['id' => $data['id']])->with(['status' => 'Error', 'class' => 'danger']);
 
         /**
          * Save image to cloud & DB

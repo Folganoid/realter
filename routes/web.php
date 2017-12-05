@@ -16,8 +16,8 @@ Auth::routes();
 Route::get('/', 'HomeController@index')->name('home');
 Route::get('/verify', 'VerifyController@index')->name('verify');
 
-
-
+Route::get('/profile', 'ProfileController@userEdit')->name('profile');
+Route::post('/profile/change', 'ProfileController@userChange')->name('profile.change');
 
 Route::get('/cabinet', 'CabinetController@index')->name('cabinet');
 Route::get('/list', 'ListController@index')->name('list');

@@ -69,7 +69,7 @@ class RegisterController extends Controller
     protected function create(array $data)
     {
         try {
-            $this->sendVerifyEmail($data['name'], $data['email']);
+            static::sendVerifyEmail($data['name'], $data['email']);
         }
         catch (Exception $e) {
             return redirect()->route('register')->with(['status' => 'Can not send Email !', 'class' => 'danger']);
@@ -94,7 +94,7 @@ class RegisterController extends Controller
      * @param $name
      * @param $email
      */
-    public function sendVerifyEmail($name, $email)
+    public static function sendVerifyEmail($name, $email)
     {
         $secret = md5($name . $email);
         $data = array (

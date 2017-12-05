@@ -61,6 +61,11 @@
                                 {{ csrf_field() }}
                             </form>
                         </li>
+                        <li>
+                            <a class="dropdown-item" href="{{ route('profile') }}">
+                                Profile
+                            </a>
+                        </li>
                     </ul>
                 </li>
         </div>
