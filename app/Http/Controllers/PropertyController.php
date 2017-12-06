@@ -29,7 +29,8 @@ class PropertyController extends Controller
             'types' => $this->types,
             'rent' => $this->rent,
             'operation' => $this->operation,
-            'square' => $this->square
+            'square' => $this->square,
+            'money' => $this->money,
         ]);
     }
 
@@ -69,7 +70,8 @@ class PropertyController extends Controller
             'types' => $this->types,
             'rent' => $this->rent,
             'square' => $this->square,
-            'operation' => $this->operation
+            'operation' => $this->operation,
+            'money' => $this->money,
         ]);
     }
 
@@ -157,8 +159,11 @@ class PropertyController extends Controller
             Image::where('house_id', $id)->delete();
             House::destroy($id);
 
-            $cloud = new \Cloudinary\Api();
-            $cloud->delete_resources($tmpArr);
+            if (!empty($tmpArr)) {
+                $cloud = new \Cloudinary\Api();
+                $cloud->delete_resources($tmpArr);
+            }
+
         }
         catch(Exception $e) {
             return redirect()->route('cabinet')->with(['status' => 'Property did not delete!', 'class' => 'danger']);
@@ -189,7 +194,8 @@ class PropertyController extends Controller
             'types' => $this->types,
             'rent' => $this->rent,
             'square' => $this->square,
-            'operation' => $this->operation
+            'operation' => $this->operation,
+            'money' => $this->money,
         ]);
     }
 

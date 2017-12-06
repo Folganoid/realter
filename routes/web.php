@@ -33,6 +33,8 @@ Route::prefix('property')->group(function () {
 
 Route::prefix('admin')->group(function () {
     Route::get('/', 'AdminController@index')->name('admin');
+    Route::get('/user_edit/{id}', 'AdminController@userEdit')->name('admin.user_edit');
+    Route::post('/user_edit_save', 'AdminController@userEditSave')->name('admin.user_edit_save');
 
 });
 

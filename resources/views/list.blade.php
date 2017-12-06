@@ -45,7 +45,7 @@
                         <p class="card-text">Address: {{$houses[$i]['address']}}</p>
                         <ul>
                             <li>Square : {{ $houses[$i]['square'] }} {{ $square[$houses[$i]['square_measure_id']] }}</li>
-                            <li>Price : <b>{{ $houses[$i]['price'] }}$</b>
+                            <li>Price : <b>{{ $houses[$i]['price'] }}{{ $money }}</b>
                                 @if($houses[$i]['operation_measure_id'] && ($houses[$i]['operation'] == 1))
                                 <i>{{ $rent[$houses[$i]['operation_measure_id']] }}</i>
                             @endif
@@ -54,8 +54,7 @@
                                 @if($houses[$i]['openview_min'])
                                     <li>Open view : {{ date('F d, Y', strtotime($houses[$i]['openview'])) }} -
                                         <b>({{ date('H:i:s', strtotime($houses[$i]['openview'])) }}
-                                            - {{ date('H:i:s', strtotime( $houses[$i]['openview'] . ' + '. $houses[$i]['openview_min'] .' minutes')) }}
-                                            )</b></li>
+                                            - {{ date('H:i:s', strtotime( $houses[$i]['openview'] . ' + '. $houses[$i]['openview_min'] .' minutes')) }})</b></li>
                                 @else
                                     <li>Open view : {{ date('F d, Y', strtotime($houses[$i]['openview'])) }} -
                                         <b>({{ date('H:i:s', strtotime($houses[$i]['openview'])) }})</b></li>

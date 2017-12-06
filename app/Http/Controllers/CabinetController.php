@@ -28,7 +28,8 @@ class CabinetController extends Controller
             'types' => $this->types,
             'rent' => $this->rent,
             'operation' => $this->operation,
-            'square' => $this->square
+            'square' => $this->square,
+            'money' => $this->money
         ]);
     }
 }

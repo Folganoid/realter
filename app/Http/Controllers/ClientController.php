@@ -23,8 +23,6 @@ class ClientController extends Controller
             $search[$i]['json'] = json_decode($search[$i]['json']);
         }
 
-       // dd($this->rent);
-
         return view('client')->with([
             'client' => $client,
             'watch' => $watch,

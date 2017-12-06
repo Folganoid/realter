@@ -46,11 +46,27 @@ return  [
             '365' => 'yearly',
         ],
 
+    /**
+     * cloudinary
+     */
     'cloudinary' =>
         [
             'max_width' => '800',
             'path' => 'http://res.cloudinary.com/realtor222/image/upload/',
+        ],
+
+    /**
+     * money
+     */
+    'money' => '$',
+
+    /**
+     * roles
+     */
+    'roles' =>
+        [
+            '1' => 'client',
+            '2' => 'agent',
+            '10' => 'admin'
         ]
-
-
 ];

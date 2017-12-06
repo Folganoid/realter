@@ -16,13 +16,15 @@ class Controller extends BaseController
     public $rent;
     public $types;
     public $operation;
+    public $money;
 
     public function __construct()
     {
         $this->square = Config::get('settings.square_measure');
         $this->rent = Config::get('settings.rent_measure');
-        $this->operation = Config::get('settings.operation');;
+        $this->operation = Config::get('settings.operation');
         $this->types = Config::get('settings.types');
+        $this->money = Config::get('settings.money');
 
         \Cloudinary::config(array(
             "cloud_name" => "realtor222",

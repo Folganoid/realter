@@ -92,12 +92,14 @@ class ListController extends Controller
             get()->toArray();
         }
 
+
         return view('list')->with([
             'houses' => $houses,
             'types' => (['0' => 'All'] + $this->types),
             'operation' => (['0' => 'All'] + $this->operation),
             'rent' => $this->rent,
             'square' => $this->square,
+            'money' => $this->money,
         ]);
     }
 

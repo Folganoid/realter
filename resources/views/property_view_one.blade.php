@@ -16,7 +16,7 @@
                 <p class="card-text">Address: {{$property['address']}}</p>
                 <ul>
                     <li>Square : {{ $property['square'] }} {{ $square[$property['square_measure_id']] }}</li>
-                    <li>Price : <b>{{ $property['price'] }}$</b>
+                    <li>Price : <b>{{ $property['price'] }}{{ $money }}</b>
                         @if($property['operation_measure_id'] &&($property['operation'] == 1))
                             <i>{{ $rent[$property['operation_measure_id']] }}</i>
                         @endif
@@ -25,8 +25,7 @@
                         @if($property['openview_min'])
                             <li>Open view : {{ date('F d, Y', strtotime($property['openview'])) }} -
                                 <b>({{ date('H:i:s', strtotime($property['openview'])) }}
-                                    - {{ date('H:i:s', strtotime( $property['openview'] . ' + '. $property['openview_min'] .' minutes')) }}
-                                    )</b></li>
+                                    - {{ date('H:i:s', strtotime( $property['openview'] . ' + '. $property['openview_min'] .' minutes')) }})</b></li>
                         @else
                             <li>Open view : {{ date('F d, Y', strtotime($property['openview'])) }} -
                                 <b>({{ date('H:i:s', strtotime($property['openview'])) }})</b></li>

@@ -12,10 +12,10 @@
     {{ Form::text('name', '', ['placeholder' => '50max', 'required' => 'required']) }}
     <br>
     {{ Form::label('Description') }}
-    {{ Form::textarea('description', '', ['placeholder' => 'enter text', 'required' => 'required']) }}
+    {{ Form::textarea('description', '', ['placeholder' => 'enter text', 'rows' => 3, 'required' => 'required']) }}
     <br>
     {{ Form::label('Price') }}
-    {{ Form::text('price', '', ['placeholder' => '100000.00', 'size' => 8, 'required' => 'required', 'pattern' => '^[1-9]\d{0,7}(?:\.\d{0,2})?$', 'title' => '10 digits max . 2 digits max']) }}$
+    {{ Form::text('price', '', ['placeholder' => '100000.00', 'size' => 8, 'required' => 'required', 'pattern' => '^[1-9]\d{0,7}(?:\.\d{0,2})?$', 'title' => '10 digits max . 2 digits max']) }}{{$money}}
     <br>
     {{ Form::label('Operation') }}
     {{ Form::select('operation', $operation, '', ['class' => 'list_operation']) }}

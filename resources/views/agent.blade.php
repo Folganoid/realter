@@ -56,6 +56,6 @@
         @endfor
     @else
         <br><br>
-        <h5>You haven't properties yet !</h5>
+        <h5>Agent haven't properties !</h5>
     @endif
 @endsection
