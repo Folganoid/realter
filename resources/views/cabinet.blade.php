@@ -4,6 +4,7 @@
     <h2>My cabinet</h2>
 
 @if(!empty($houses))
+    <div class="d-flex justify-content-center">{!! $houses->links('vendor.pagination.bootstrap-4') !!}</div>
     @for( $i = 0 ; $i < count($houses); $i++)
         <div class="card">
             <h5 class="card-header">{{ $houses[$i]['name'] }} - <b>({{ $operation[$houses[$i]['operation']] }})</b></h5>
@@ -49,6 +50,9 @@
         </div>
         <br>
     @endfor
+
+    <div class="d-flex justify-content-center">{!! $houses->links('vendor.pagination.bootstrap-4') !!}</div>
+
     @else
         <br><br>
         <h5>You haven't properties yet !</h5>

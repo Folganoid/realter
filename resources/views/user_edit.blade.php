@@ -45,7 +45,7 @@
     {{ Form::select('verify', ['0' => 'false', '1' => 'true'], $user->verify ) }}
     <br>
     {{ Form::label('Role') }}
-    {{ Form::select('role', ['1' => 'client', '2' => 'agent', '10' => 'admin'], $user->role ) }}
+    {{ Form::select('role', $roles, $user->role ) }}
     <br>
     {{ Form::label('Status') }}
     {{ Form::number('status', $user->status, ['required' => 'required']) }}

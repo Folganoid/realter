@@ -41,7 +41,7 @@ class AdminController extends Controller
             if (empty($user)) {
                 return redirect()->route('home')->with(['status' => 'user don\'t find', 'class' => 'danger']);
             }
-        return view('user_edit')->with(['user' => $user]);
+        return view('user_edit')->with(['user' => $user, 'roles' => $this->roles]);
     }
 
     /**

@@ -16,8 +16,8 @@ class ClientController extends Controller
     public function showClient($id) {
 
         $client = User::where('id' , $id)->with(['house'])->first()->toArray();
-        $watch = Watch::where('user_id', $id)->with('house')->get()->toArray();
-        $search = Search::where('user_id', $id)->get()->toArray();
+        $watch = Watch::where('user_id', $id)->orderBy('created_at', 'DESC')->with('house')->get()->toArray();
+        $search = Search::where('user_id', $id)->orderBy('created_at', 'DESC')->get()->toArray();
 
         for($i = 0 ; $i < count($search); $i++) {
             $search[$i]['json'] = json_decode($search[$i]['json']);
@@ -36,7 +36,7 @@ class ClientController extends Controller
     public function showAgent($id) {
 
         $agent = User::find($id);
-        $houses = House::where('user_id', $id)->with(['image', 'document', 'watch'])->get()->toArray();
+        $houses = House::where('user_id', $id)->with(['image', 'document', 'watch'])->orderBy('created_at', 'DESC')->get()->toArray();
 
         return view('agent')->with([
             'agent' => $agent,

@@ -21,7 +21,9 @@ class CabinetController extends Controller
             return redirect()->route('home')->with(['status' => 'You are not agent!', 'class' => 'danger']);
         }
 
-        $houses = House::where('user_id', Auth::id())->with(['image', 'document', 'watch'])->get()->toArray();
+        $houses = House::where('user_id', Auth::id())->with(['image', 'document', 'watch'])->
+        orderBy('created_at', 'DESC')->
+        paginate($this->pagin);
 
         return view('cabinet')->with([
             'houses' => $houses,

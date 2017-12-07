@@ -26,50 +26,57 @@
             {{ Form::select('rent', $rent, '', ['class' => 'list_rent', 'disabled' => true]) }}
 
             {{ Form::submit('Search', ['class' => 'btn btn-primary']) }}
+            <br>
+            {{ Form::label('Sort by ') }}
+            {{ Form::select('sort', [
+            'price@DESC' => 'PRICE +',
+            'price@ASC' => 'PRICE -',
+            'created_at@DESC' => 'Date +',
+            'created_at@ASC' => 'Date -',
+             ], 'created_at@DESC') }}
             {!! Form::close() !!}
         </div>
     </div>
 
-
-
     <br>
     @if(!empty($houses))
-        @for( $i = 0 ; $i < count($houses); $i++)
+        <div class="d-flex justify-content-center">{!! $houses->links('vendor.pagination.bootstrap-4') !!}</div>
+        @foreach ($houses as $house)
             <div class="card">
-                <h5 class="card-header">{{ $houses[$i]['name'] }} - <b>({{ $operation[$houses[$i]['operation']] }})</b></h5>
+                <h5 class="card-header">{{ $house['name'] }} - <b>({{ $operation[$house['operation']] }})</b></h5>
                 <div class="card-body row">
                     <div class="col-8">
-                        <sup>Created at : {{ $houses[$i]['created_at'] }} / Updated at
-                            : {{ $houses[$i]['updated_at'] }}</sup>
-                        <h6 class="card-title">{{ $types[$houses[$i]['house_type_id']] }} - {{ $houses[$i]['desc'] }}</h6>
-                        <p class="card-text">Address: {{$houses[$i]['address']}}</p>
+                        <sup>Created at : {{ $house['created_at'] }} / Updated at
+                            : {{ $house['updated_at'] }}</sup>
+                        <h6 class="card-title">{{ $types[$house['house_type_id']] }} - {{ $house['desc'] }}</h6>
+                        <p class="card-text">Address: {{$house['address']}}</p>
                         <ul>
-                            <li>Square : {{ $houses[$i]['square'] }} {{ $square[$houses[$i]['square_measure_id']] }}</li>
-                            <li>Price : <b>{{ $houses[$i]['price'] }}{{ $money }}</b>
-                                @if($houses[$i]['operation_measure_id'] && ($houses[$i]['operation'] == 1))
-                                <i>{{ $rent[$houses[$i]['operation_measure_id']] }}</i>
+                            <li>Square : {{ $house['square'] }} {{ $square[$house['square_measure_id']] }}</li>
+                            <li>Price : <b>{{ $house['price'] }}{{ $money }}</b>
+                                @if($house['operation_measure_id'] && ($house['operation'] == 1))
+                                <i>{{ $rent[$house['operation_measure_id']] }}</i>
                             @endif
                             </li>
-                            @if($houses[$i]['openview'])
-                                @if($houses[$i]['openview_min'])
-                                    <li>Open view : {{ date('F d, Y', strtotime($houses[$i]['openview'])) }} -
-                                        <b>({{ date('H:i:s', strtotime($houses[$i]['openview'])) }}
-                                            - {{ date('H:i:s', strtotime( $houses[$i]['openview'] . ' + '. $houses[$i]['openview_min'] .' minutes')) }})</b></li>
+                            @if($house['openview'])
+                                @if($house['openview_min'])
+                                    <li>Open view : {{ date('F d, Y', strtotime($house['openview'])) }} -
+                                        <b>({{ date('H:i:s', strtotime($house['openview'])) }}
+                                            - {{ date('H:i:s', strtotime( $house['openview'] . ' + '. $house['openview_min'] .' minutes')) }})</b></li>
                                 @else
-                                    <li>Open view : {{ date('F d, Y', strtotime($houses[$i]['openview'])) }} -
-                                        <b>({{ date('H:i:s', strtotime($houses[$i]['openview'])) }})</b></li>
+                                    <li>Open view : {{ date('F d, Y', strtotime($house['openview'])) }} -
+                                        <b>({{ date('H:i:s', strtotime($house['openview'])) }})</b></li>
                                 @endif
                             @endif
-                            <li>Watched : {{ count($houses[$i]['watch']) }}</li>
-                            <li><b>Agent: <i>{{ $houses[$i]['user']['name'] . ' '. $houses[$i]['user']['surname'] . '; tel: ' . $houses[$i]['user']['tel'] }}</i></b></li>
+                            <li>Watched : {{ count($house['watch']) }}</li>
+                            <li><b>Agent: <i>{{ $house['user']['name'] . ' '. $house['user']['surname'] . '; tel: ' . $house['user']['tel'] }}</i></b></li>
                         </ul>
-                        <a href="{{ route('property.view', ['id' => $houses[$i]['id']]) }}" class="btn btn-primary">More info ...</a>
+                        <a href="{{ route('property.view', ['id' => $house['id']]) }}" class="btn btn-primary">More info ...</a>
                     </div>
                     <div class="col-4">
                         <div align="center">
-                        @if(count($houses[$i]['image']) > 0)
-                            <img src="{{ Config::get('settings.cloudinary')['path'] . $houses[$i]['image'][0]['path'] }}" class="rounded img-fluid"
-                                 alt="{{ $houses[$i]['image'][0]['name'] }}">
+                        @if(count($house['image']) > 0)
+                            <img src="{{ Config::get('settings.cloudinary')['path'] . $house['image'][0]['path'] }}" class="rounded img-fluid"
+                                 alt="{{ $house['image'][0]['name'] }}">
                         @else
                             <img src="{{ asset( 'img/none.jpeg') }}" class="rounded img-fluid align-content-center" alt="No image">
                         @endif
@@ -78,7 +85,9 @@
                 </div>
             </div>
             <br>
-        @endfor
+        @endforeach
+        <div class="d-flex justify-content-center">{!! $houses->links('vendor.pagination.bootstrap-4') !!}</div>
+
     @else
         <br><br>
         <h5>List is empty !</h5>

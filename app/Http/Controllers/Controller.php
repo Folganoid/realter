@@ -17,6 +17,8 @@ class Controller extends BaseController
     public $types;
     public $operation;
     public $money;
+    public $roles;
+    public $pagin;
 
     public function __construct()
     {
@@ -25,6 +27,8 @@ class Controller extends BaseController
         $this->operation = Config::get('settings.operation');
         $this->types = Config::get('settings.types');
         $this->money = Config::get('settings.money');
+        $this->roles = Config::get('settings.roles');
+        $this->pagin = Config::get('settings.paginate');
 
         \Cloudinary::config(array(
             "cloud_name" => "realtor222",

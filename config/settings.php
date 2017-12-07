@@ -59,6 +59,7 @@ return  [
      * money
      */
     'money' => '$',
+    'paginate' => 2,
 
     /**
      * roles
@@ -68,5 +69,5 @@ return  [
             '1' => 'client',
             '2' => 'agent',
             '10' => 'admin'
-        ]
+        ],
 ];
